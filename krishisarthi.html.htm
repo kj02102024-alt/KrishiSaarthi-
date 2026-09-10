@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrishiSarthi 🌱 - Farmer App</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-active {
+            border-bottom: 4px solid #059669;
+            color: #059669;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-emerald-50/40 font-sans text-slate-800 min-h-screen pb-12">
+
+    <!-- Header / Brand -->
+    <header class="bg-emerald-700 text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <!-- Custom App Logo -->
+                <img src="logo.jpeg" alt="KrishiSarthi Logo" class="w-12 h-12 rounded-full object-cover shadow-md border-2 border-emerald-300" onerror="this.onerror=null; this.src='WhatsApp%20Image%202026-09-10%20at%202.36.32%20PM.jpeg';">
+                <div>
+                    <h1 class="text-2xl font-black tracking-wide leading-none flex items-center gap-1">KrishiSarthi 🌱</h1>
+                    <p class="text-xs text-emerald-200 mt-0.5">Kisan Ka Digital Saathi</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="bg-emerald-800 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Live Mandi
+                </span>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-white text-slate-600 border-b border-emerald-100 shadow-sm overflow-x-auto">
+            <div class="max-w-6xl mx-auto flex justify-around min-w-[650px]">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn tab-active flex-1 py-3 px-2 text-center text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 hover:bg-emerald-50 transition">
+                    <i class="fa-solid fa-chart-pie text-lg"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('mandi')" id="tab-mandi" class="tab-btn flex-1 py-3 px-2 text-center text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 hover:bg-emerald-50 transition">
+                    <i class="fa-solid fa-chart-line text-lg"></i>
+                    <span>Mandi Prices</span>
+                </button>
+                <button onclick="switchTab('localmarket')" id="tab-localmarket" class="tab-btn flex-1 py-3 px-2 text-center text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 hover:bg-emerald-50 transition">
+                    <i class="fa-solid fa-basket-shopping text-lg text-emerald-600"></i>
+                    <span>Daily Local Market</span>
+                </button>
+                <button onclick="switchTab('marketplace')" id="tab-marketplace" class="tab-btn flex-1 py-3 px-2 text-center text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 hover:bg-emerald-50 transition">
+                    <i class="fa-solid fa-store text-lg"></i>
+                    <span>Bulk Wholesale</span>
+                </button>
+                <button onclick="switchTab('disease')" id="tab-disease" class="tab-btn flex-1 py-3 px-2 text-center text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 hover:bg-emerald-50 transition">
+                    <i class="fa-solid fa-notes-medical text-lg"></i>
+                    <span>Helpdesk</span>
+                </button>
+                <button onclick="switchTab('rental')" id="tab-rental" class="tab-btn flex-1 py-3 px-2 text-center text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 hover:bg-emerald-50 transition">
+                    <i class="fa-solid fa-tractor text-lg"></i>
+                    <span>Rentals</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6">
+
+        <!-- ================= SECTION 0: DASHBOARD ================= -->
+        <section id="sec-dashboard" class="space-y-6">
+            <div class="bg-gradient-to-r from-emerald-800 to-teal-700 text-white rounded-2xl p-6 shadow-md">
+                <h2 class="text-2xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-gauge-high text-green-300"></i> Farmer Overview Dashboard
+                </h2>
+                <p class="text-emerald-100 text-sm mt-1">Apne sales, local orders, aur mandi rates ka complete hisab-kitab.</p>
+            </div>
+
+            <!-- Stats Overview Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <i class="fa-solid fa-basket-shopping text-2xl text-emerald-600 mb-2"></i>
+                    <p class="text-xs font-semibold text-slate-500 uppercase">Daily Local Items</p>
+                    <h3 id="dash-local-count" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <i class="fa-solid fa-boxes-packing text-2xl text-blue-600 mb-2"></i>
+                    <p class="text-xs font-semibold text-slate-500 uppercase">Bulk Listings</p>
+                    <h3 id="dash-bulk-count" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <i class="fa-solid fa-wheat-awn text-2xl text-amber-600 mb-2"></i>
+                    <p class="text-xs font-semibold text-slate-500 uppercase">Mandi Crops</p>
+                    <h3 id="dash-mandi-count" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <i class="fa-solid fa-handshake text-2xl text-purple-600 mb-2"></i>
+                    <p class="text-xs font-semibold text-slate-500 uppercase">Tools Available</p>
+                    <h3 id="dash-tool-count" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+                </div>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm flex flex-wrap gap-3 items-center justify-between">
+                <span class="font-bold text-slate-700"><i class="fa-solid fa-bolt text-amber-500"></i> Quick Actions:</span>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="switchTab('localmarket'); toggleLocalForm();" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition">
+                        + Sell Daily Items (Kg)
+                    </button>
+                    <button onclick="switchTab('marketplace'); toggleMarketplaceForm();" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition">
+                        + Post Bulk Produce
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Highlights Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-900 border-b pb-2 mb-3 flex items-center justify-between">
+                        <span><i class="fa-solid fa-fire text-orange-500"></i> Top Daily Local Items</span>
+                        <button onclick="switchTab('localmarket')" class="text-xs text-emerald-600 hover:underline">View All</button>
+                    </h3>
+                    <div id="dash-local-preview" class="space-y-3"></div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-900 border-b pb-2 mb-3 flex items-center justify-between">
+                        <span><i class="fa-solid fa-chart-line text-emerald-600"></i> Today Mandi Highlights</span>
+                        <button onclick="switchTab('mandi')" class="text-xs text-emerald-600 hover:underline">View All</button>
+                    </h3>
+                    <div id="dash-mandi-preview" class="space-y-3"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= SECTION 1: MANDI PRICES ================= -->
+        <section id="sec-mandi" class="hidden space-y-6">
+            <div class="bg-emerald-800 text-white rounded-2xl p-5 shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-trend-up text-green-300"></i> Today's Mandi Rates
+                    </h2>
+                    <p class="text-emerald-100 text-sm mt-1">Real-time daily market rates across nearby mandis.</p>
+                </div>
+                <div class="w-full md:w-auto">
+                    <input type="text" id="mandi-search" oninput="filterMandiPrices()" placeholder="Search crop (e.g. Wheat, Potato)..." class="w-full md:w-64 px-4 py-2.5 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 font-medium">
+                </div>
+            </div>
+
+            <!-- Mandi Price Cards Grid -->
+            <div id="mandi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </section>
+
+
+        <!-- ================= SECTION 2: DAILY LOCAL MARKET (SMALL QUANTITY) ================= -->
+        <section id="sec-localmarket" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-emerald-900 flex items-center gap-2">
+                        <i class="fa-solid fa-basket-shopping text-emerald-600"></i> Daily Local Market (Choti Quantity)
+                    </h2>
+                    <p class="text-slate-600 text-sm">Ghar aur local market ke liye direct tamatar, aalu, doodh, sabzi order karein.</p>
+                </div>
+                <button onclick="toggleLocalForm()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base">
+                    <i class="fa-solid fa-plus-circle text-lg"></i> Post Local Item
+                </button>
+            </div>
+
+            <!-- Collapsible Form for Local Market -->
+            <div id="local-form-container" class="hidden bg-white p-6 rounded-2xl border-2 border-emerald-500 shadow-lg transition">
+                <h3 class="text-lg font-bold text-emerald-900 mb-4 border-b pb-2 flex items-center justify-between">
+                    <span><i class="fa-solid fa-cart-plus text-emerald-600"></i> Add Item for Daily Local Sale</span>
+                    <button onclick="toggleLocalForm()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </h3>
+                <form id="local-form" onsubmit="handleLocalSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Item Name</label>
+                        <input type="text" id="l-item" required placeholder="e.g. Fresh Tomatoes / Desi Ghee" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Available Pack/Qty</label>
+                        <input type="text" id="l-qty" required placeholder="e.g. 2 Kg, 5 Kg, 1 Litre" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Price (₹)</label>
+                        <input type="number" id="l-price" required placeholder="e.g. 40" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Local Area / Locality</label>
+                        <input type="text" id="l-location" required placeholder="e.g. Gomti Nagar, Lucknow" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Seller Name</label>
+                        <input type="text" id="l-name" required placeholder="Your Name" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">WhatsApp Phone Number</label>
+                        <input type="tel" id="l-phone" required placeholder="e.g. 919876543210 (with country code)" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div class="md:col-span-2 pt-2">
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition text-lg">
+                            List Item for Local Buyers
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Local Items Grid -->
+            <div id="localmarket-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+
+        <!-- ================= SECTION 3: CROP MARKETPLACE (BULK) ================= -->
+        <section id="sec-marketplace" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-emerald-900 flex items-center gap-2">
+                        <i class="fa-solid fa-hand-holding-dollar text-emerald-600"></i> Wholesale Bulk Marketplace
+                    </h2>
+                    <p class="text-slate-600 text-sm">Sell heavy quantity produce directly to big buyers and traders.</p>
+                </div>
+                <button onclick="toggleMarketplaceForm()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base">
+                    <i class="fa-solid fa-plus-circle text-lg"></i> Post Bulk Produce
+                </button>
+            </div>
+
+            <!-- Collapsible Listing Form -->
+            <div id="marketplace-form-container" class="hidden bg-white p-6 rounded-2xl border-2 border-emerald-500 shadow-lg transition">
+                <h3 class="text-lg font-bold text-emerald-900 mb-4 border-b pb-2 flex items-center justify-between">
+                    <span><i class="fa-solid fa-square-plus text-emerald-600"></i> Post Bulk Crop for Sale</span>
+                    <button onclick="toggleMarketplaceForm()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </h3>
+                <form id="marketplace-form" onsubmit="handleMarketplaceSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Crop Name</label>
+                        <input type="text" id="m-crop" required placeholder="e.g. Organic Wheat" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Quantity (Quintal or Ton)</label>
+                        <input type="text" id="m-qty" required placeholder="e.g. 50 Quintal" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Price per Unit (₹)</label>
+                        <input type="number" id="m-price" required placeholder="e.g. 2300" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Location / Village</label>
+                        <input type="text" id="m-location" required placeholder="e.g. Lucknow, UP" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Farmer Name</label>
+                        <input type="text" id="m-name" required placeholder="Your full name" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Contact Phone Number</label>
+                        <input type="tel" id="m-phone" required placeholder="e.g. 9876543210" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div class="md:col-span-2 pt-2">
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition text-lg">
+                            Publish Produce Listing
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Listings Grid -->
+            <div id="marketplace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+
+        <!-- ================= SECTION 4: HELPDESK ================= -->
+        <section id="sec-disease" class="hidden space-y-6">
+            <div class="bg-amber-700 text-white rounded-2xl p-5 shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-plant-wilt text-amber-300"></i> Crop Disease & Advisory Helpdesk
+                    </h2>
+                    <p class="text-amber-100 text-sm mt-1">Ask questions, report symptoms, and get expert treatment solutions.</p>
+                </div>
+                <button onclick="toggleDiseaseForm()" class="w-full md:w-auto bg-white text-amber-800 hover:bg-amber-50 font-bold py-3 px-6 rounded-xl shadow transition flex items-center justify-center gap-2 text-base">
+                    <i class="fa-solid fa-circle-question text-lg"></i> Ask Expert Solution
+                </button>
+            </div>
+
+            <!-- Submit Query Form -->
+            <div id="disease-form-container" class="hidden bg-white p-6 rounded-2xl border-2 border-amber-500 shadow-lg">
+                <h3 class="text-lg font-bold text-amber-900 mb-4 border-b pb-2 flex items-center justify-between">
+                    <span><i class="fa-solid fa-bug text-amber-600"></i> Submit Crop Symptom</span>
+                    <button onclick="toggleDiseaseForm()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </h3>
+                <form id="disease-form" onsubmit="handleDiseaseSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Crop Name</label>
+                            <input type="text" id="d-crop" required placeholder="e.g. Paddy / Rice" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Your Name</label>
+                            <input type="text" id="d-farmer" required placeholder="Your name" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Symptom Description</label>
+                        <textarea id="d-symptoms" rows="3" required placeholder="Describe what is happening..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Upload Photo</label>
+                        <input type="file" id="d-img" accept="image/*" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-slate-50 text-slate-600 text-sm">
+                    </div>
+                    <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl shadow transition text-lg">
+                        Submit Query to Experts
+                    </button>
+                </form>
+            </div>
+
+            <!-- Feed List -->
+            <div id="disease-feed" class="space-y-4"></div>
+        </section>
+
+
+        <!-- ================= SECTION 5: TOOL & TRACTOR RENTAL ================= -->
+        <section id="sec-rental" class="hidden space-y-6">
+            <div class="bg-blue-800 text-white rounded-2xl p-5 shadow-md">
+                <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-truck-monster text-blue-300"></i> Peer-to-Peer Machinery Rental
+                </h2>
+                <p class="text-blue-100 text-sm mt-1">Rent tractors, harvesters, and tools at affordable daily/hourly rates.</p>
+            </div>
+
+            <div id="rental-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border-2 border-emerald-500">
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-2xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-calendar-check text-emerald-600"></i> Book Machinery
+            </h3>
+            <p id="booking-tool-title" class="text-emerald-700 font-bold mb-4"></p>
+
+            <form onsubmit="handleBookingSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Your Name</label>
+                    <input type="text" required placeholder="Full Name" class="w-full px-4 py-2 rounded-xl border border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Phone Number</label>
+                    <input type="tel" required placeholder="Phone Number" class="w-full px-4 py-2 rounded-xl border border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Required Date</label>
+                    <input type="date" required class="w-full px-4 py-2 rounded-xl border border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Duration (Hours/Days)</label>
+                    <input type="text" required placeholder="e.g. 1 Day or 4 Hours" class="w-full px-4 py-2 rounded-xl border border-slate-300">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition text-lg mt-2">
+                    Confirm Rental Request
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT STATE & LOGIC -->
+    <script>
+        const state = {
+            mandiPrices: [
+                { id: 1, crop: "Wheat (गेहूं)", mandi: "Lucknow APMC", price: 2275, unit: "Quintal", trend: "up", change: 45 },
+                { id: 2, crop: "Paddy/Rice (धान)", mandi: "Kanpur Mandi", price: 2183, unit: "Quintal", trend: "down", change: 15 },
+                { id: 3, crop: "Potato (आलू)", mandi: "Agra Mandi", price: 1450, unit: "Quintal", trend: "up", change: 80 },
+                { id: 4, crop: "Tomato (टमाटर)", mandi: "Varanasi APMC", price: 2800, unit: "Quintal", trend: "up", change: 150 },
+                { id: 5, crop: "Mustard (सरसों)", mandi: "Mathura Mandi", price: 5400, unit: "Quintal", trend: "down", change: 30 },
+                { id: 6, crop: "Onion (प्याज़)", mandi: "Nashik APMC", price: 1950, unit: "Quintal", trend: "up", change: 60 }
+            ],
+            localItems: [
+                { id: 1, item: "Fresh Red Tomatoes", qty: "2 Kg Pack", price: 60, location: "Gomti Nagar, Lucknow", seller: "Ramesh Farmer", phone: "919876543210" },
+                { id: 2, item: "Organic Potatoes (Aalu)", qty: "5 Kg Bag", price: 110, location: "Alambagh, Lucknow", seller: "Suresh Kumar", phone: "919123456789" },
+                { id: 3, item: "Pure Farm Milk (Doodh)", qty: "1 Litre", price: 55, location: "Indira Nagar, Lucknow", seller: "Mahesh Yadav", phone: "919988776655" }
+            ],
+            marketplaceListings: [
+                { id: 1, crop: "Sharbati Wheat", qty: "60 Quintal", price: 2350, location: "Barabanki, UP", farmer: "Ramesh Singh", phone: "9876543210" },
+                { id: 2, crop: "Fresh Red Tomatoes", qty: "10 Quintal", price: 2600, location: "Sitapur, UP", farmer: "Suresh Kumar", phone: "9123456789" },
+                { id: 3, crop: "Organic Potatoes", qty: "100 Quintal", price: 1400, location: "Unnao, UP", farmer: "Mahesh Patel", phone: "9988776655" }
+            ],
+            diseaseQueries: [
+                {
+                    id: 1,
+                    crop: "Wheat",
+                    farmer: "Harish Chandra",
+                    symptoms: "Yellow strips appearing on leaves with powder-like rust.",
+                    status: "Expert Answered",
+                    answer: "Yellow Rust attack. Spray Propiconazole 25% EC @ 1 ml per liter of water immediately."
+                },
+                { id: 2, crop: "Tomato", farmer: "Vijay Pal", symptoms: "Leaves curling downwards.", status: "Under Review", answer: null }
+            ],
+            rentals: [
+                { id: 1, name: "Mahindra 575 DI Tractor", rate: "₹750 / Hour", owner: "Gurpreet Singh", location: "Lucknow", icon: "fa-tractor" },
+                { id: 2, name: "Rotavator 7 Feet", rate: "₹400 / Hour", owner: "Balwanth Verma", location: "Sitapur", icon: "fa-gears" },
+                { id: 3, name: "Combine Harvester", rate: "₹2,200 / Hour", owner: "Jagdish Yadav", location: "Rae Bareli", icon: "fa-truck-monster" },
+                { id: 4, name: "Solar Battery Sprayer", rate: "₹250 / Day", owner: "Shiv Kumar", location: "Unnao", icon: "fa-spray-can" }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDashboard();
+            renderMandiPrices();
+            renderLocalMarket();
+            renderMarketplace();
+            renderDiseaseFeed();
+            renderRentals();
+        });
+
+        function switchTab(tabId) {
+            ['dashboard', 'mandi', 'localmarket', 'marketplace', 'disease', 'rental'].forEach(sec => {
+                document.getElementById(`sec-${sec}`).classList.add('hidden');
+                document.getElementById(`tab-${sec}`).classList.remove('tab-active');
+            });
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('tab-active');
+        }
+
+        function renderDashboard() {
+            // Update Counts
+            document.getElementById('dash-local-count').innerText = state.localItems.length;
+            document.getElementById('dash-bulk-count').innerText = state.marketplaceListings.length;
+            document.getElementById('dash-mandi-count').innerText = state.mandiPrices.length;
+            document.getElementById('dash-tool-count').innerText = state.rentals.length;
+
+            // Local Items Preview
+            document.getElementById('dash-local-preview').innerHTML = state.localItems.slice(0, 3).map(item => `
+                <div class="flex justify-between items-center text-sm p-2 rounded-xl bg-slate-50">
+                    <div>
+                        <p class="font-bold text-slate-800">${item.item} (${item.qty})</p>
+                        <p class="text-xs text-slate-500">${item.location}</p>
+                    </div>
+                    <span class="font-extrabold text-emerald-700">₹${item.price}</span>
+                </div>
+            `).join('');
+
+            // Mandi Rates Preview
+            document.getElementById('dash-mandi-preview').innerHTML = state.mandiPrices.slice(0, 3).map(item => `
+                <div class="flex justify-between items-center text-sm p-2 rounded-xl bg-slate-50">
+                    <div>
+                        <p class="font-bold text-slate-800">${item.crop}</p>
+                        <p class="text-xs text-slate-500">${item.mandi}</p>
+                    </div>
+                    <span class="font-extrabold text-slate-900">₹${item.price} <span class="text-xs font-normal">/${item.unit}</span></span>
+                </div>
+            `).join('');
+        }
+
+        function renderMandiPrices(filtered = null) {
+            const container = document.getElementById('mandi-grid');
+            const data = filtered || state.mandiPrices;
+            if (data.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-500 font-medium">No crops found.</div>`;
+                return;
+            }
+            container.innerHTML = data.map(item => `
+                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">${item.crop}</h3>
+                            <p class="text-xs font-semibold text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-emerald-600"></i> ${item.mandi}</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold ${item.trend === 'up' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            <i class="fa-solid ${item.trend === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}"></i> ₹${item.change}
+                        </span>
+                    </div>
+                    <div class="mt-4 pt-3 border-t flex justify-between items-baseline">
+                        <span class="text-xs text-slate-400">Current Rate</span>
+                        <div><span class="text-2xl font-black text-emerald-800">₹${item.price.toLocaleString()}</span> <span class="text-xs text-slate-500">/ ${item.unit}</span></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterMandiPrices() {
+            const query = document.getElementById('mandi-search').value.toLowerCase();
+            renderMandiPrices(state.mandiPrices.filter(i => i.crop.toLowerCase().includes(query) || i.mandi.toLowerCase().includes(query)));
+        }
+
+        /* --- LOCAL MARKET LOGIC --- */
+        function renderLocalMarket() {
+            document.getElementById('localmarket-grid').innerHTML = state.localItems.map(item => {
+                const message = encodeURIComponent(`Hello! I want to buy local item: ${item.item} (${item.qty}) for Rs.${item.price} from KrishiSarthi.`);
+                const waUrl = `https://wa.me/${item.phone}?text=${message}`;
+
+                return `
+                <div class="bg-white rounded-2xl p-5 border border-emerald-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-bold text-emerald-950">${item.item}</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-lg">${item.qty}</span>
+                        </div>
+                        <p class="text-2xl font-extrabold text-slate-900 mb-3">₹${item.price.toLocaleString()}</p>
+                        <div class="space-y-1 text-xs text-slate-600 border-t pt-2">
+                            <p><i class="fa-solid fa-user text-emerald-600"></i> ${item.seller}</p>
+                            <p><i class="fa-solid fa-location-dot text-emerald-600"></i> ${item.location}</p>
+                        </div>
+                    </div>
+                    <a href="${waUrl}" target="_blank" class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 rounded-xl text-center flex items-center justify-center gap-2 shadow">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Order on WhatsApp
+                    </a>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function toggleLocalForm() { document.getElementById('local-form-container').classList.toggle('hidden'); }
+
+        function handleLocalSubmit(e) {
+            e.preventDefault();
+            state.localItems.unshift({
+                id: Date.now(),
+                item: document.getElementById('l-item').value,
+                qty: document.getElementById('l-qty').value,
+                price: Number(document.getElementById('l-price').value),
+                location: document.getElementById('l-location').value,
+                seller: document.getElementById('l-name').value,
+                phone: document.getElementById('l-phone').value
+            });
+            renderLocalMarket();
+            renderDashboard();
+            document.getElementById('local-form').reset();
+            toggleLocalForm();
+        }
+
+        /* --- BULK MARKETPLACE LOGIC --- */
+        function renderMarketplace() {
+            document.getElementById('marketplace-grid').innerHTML = state.marketplaceListings.map(item => `
+                <div class="bg-white rounded-2xl p-5 border border-emerald-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-bold text-emerald-950">${item.crop}</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-lg">${item.qty}</span>
+                        </div>
+                        <p class="text-2xl font-extrabold text-slate-900 mb-3">₹${item.price.toLocaleString()} <span class="text-xs font-normal text-slate-500">/ unit</span></p>
+                        <div class="space-y-1 text-xs text-slate-600 border-t pt-2">
+                            <p><i class="fa-solid fa-user text-emerald-600"></i> ${item.farmer}</p>
+                            <p><i class="fa-solid fa-location-dot text-emerald-600"></i> ${item.location}</p>
+                        </div>
+                    </div>
+                    <a href="tel:${item.phone}" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-center flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-phone"></i> Call (${item.phone})
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function toggleMarketplaceForm() { document.getElementById('marketplace-form-container').classList.toggle('hidden'); }
+
+        function handleMarketplaceSubmit(e) {
+            e.preventDefault();
+            state.marketplaceListings.unshift({
+                id: Date.now(),
+                crop: document.getElementById('m-crop').value,
+                qty: document.getElementById('m-qty').value,
+                price: Number(document.getElementById('m-price').value),
+                location: document.getElementById('m-location').value,
+                farmer: document.getElementById('m-name').value,
+                phone: document.getElementById('m-phone').value
+            });
+            renderMarketplace();
+            renderDashboard();
+            document.getElementById('marketplace-form').reset();
+            toggleMarketplaceForm();
+        }
+
+        /* --- HELPDESK & RENTALS --- */
+        function renderDiseaseFeed() {
+            document.getElementById('disease-feed').innerHTML = state.diseaseQueries.map(item => `
+                <div class="bg-white rounded-2xl p-5 border border-amber-100 shadow-sm space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full">${item.crop}</span>
+                            <h3 class="text-base font-bold text-slate-900 mt-1">${item.symptoms}</h3>
+                            <p class="text-xs text-slate-500">Submitted by ${item.farmer}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${item.status === 'Expert Answered' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">
+                            ${item.status}
+                        </span>
+                    </div>
+                    ${item.answer ? `<div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-sm text-emerald-950"><strong>Expert Solution:</strong> ${item.answer}</div>` : `<div class="bg-slate-50 p-3 text-xs italic text-slate-500">Under expert review...</div>`}
+                </div>
+            `).join('');
+        }
+
+        function toggleDiseaseForm() { document.getElementById('disease-form-container').classList.toggle('hidden'); }
+
+        function handleDiseaseSubmit(e) {
+            e.preventDefault();
+            state.diseaseQueries.unshift({
+                id: Date.now(),
+                crop: document.getElementById('d-crop').value,
+                farmer: document.getElementById('d-farmer').value,
+                symptoms: document.getElementById('d-symptoms').value,
+                status: "Under Review",
+                answer: null
+            });
+            renderDiseaseFeed();
+            document.getElementById('disease-form').reset();
+            toggleDiseaseForm();
+        }
+
+        function renderRentals() {
+            document.getElementById('rental-grid').innerHTML = state.rentals.map(item => `
+                <div class="bg-white rounded-2xl p-5 border border-blue-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center text-2xl mb-3"><i class="fa-solid ${item.icon}"></i></div>
+                        <h3 class="text-lg font-bold text-slate-900">${item.name}</h3>
+                        <p class="text-xl font-extrabold text-blue-800 my-2">${item.rate}</p>
+                        <p class="text-xs text-slate-600"><i class="fa-solid fa-location-dot text-blue-600"></i> ${item.location} (Owner: ${item.owner})</p>
+                    </div>
+                    <button onclick="openBookingModal('${item.name}')" class="mt-4 bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl">Book Now</button>
+                </div>
+            `).join('');
+        }
+
+        function openBookingModal(t) { document.getElementById('booking-tool-title').innerText = t; document.getElementById('booking-modal').classList.remove('hidden'); }
+        function closeBookingModal() { document.getElementById('booking-modal').classList.add('hidden'); }
+        function handleBookingSubmit(e) { e.preventDefault(); alert('Rental request sent!'); closeBookingModal(); }
+    </script>
+</body>
+</html>
