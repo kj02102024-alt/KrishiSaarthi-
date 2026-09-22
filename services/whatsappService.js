@@ -7,6 +7,7 @@ const PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
 const API_BASE = "https://graph.facebook.com/v20.0";
 
 export async function downloadMedia(mediaId) {
+  // Step 1: Metadata fetch karein
   const metaRes = await fetch(`${API_BASE}/${mediaId}`, {
     headers: { Authorization: `Bearer ${WHATSAPP_TOKEN}` },
   });
@@ -19,8 +20,12 @@ export async function downloadMedia(mediaId) {
   const downloadUrl = meta.url;
   const mimeType = meta.mime_type || "audio/ogg";
 
+  // Step 2: Actual file fetch karein (User-Agent header zaroori hai Meta API ke liye)
   const fileRes = await fetch(downloadUrl, {
-    headers: { Authorization: `Bearer ${WHATSAPP_TOKEN}` },
+    headers: {
+      Authorization: `Bearer ${WHATSAPP_TOKEN}`,
+      "User-Agent": "curl/7.64.1" // Iske bina Meta file download block kar sakta hai
+    },
   });
 
   if (!fileRes.ok) {
@@ -29,6 +34,7 @@ export async function downloadMedia(mediaId) {
 
   const arrayBuffer = await fileRes.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
+
   return { buffer, mimeType };
 }
 
