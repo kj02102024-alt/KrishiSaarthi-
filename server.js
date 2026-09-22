@@ -1,10 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import webhookRouter from './routes/webhook.js';
-import chatRouter from './routes/chat.js';
-import listingsRouter from './routes/listings.js';
-import translateRouter from './routes/translate.js';
+import webhookRouter from '../routes/webhook.js';
+import chatRouter from '../routes/chat.js';
+import listingsRouter from '../routes/listings.js';
+import translateRouter from '../routes/translate.js';
 
 dotenv.config();
 
