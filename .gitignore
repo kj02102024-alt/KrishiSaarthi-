@@ -1,4 +1,7 @@
-node_modules
-.env
 node_modules/
 .env
+.env.local
+.env.*.local
+_archive/
+.DS_Store
+.vercel

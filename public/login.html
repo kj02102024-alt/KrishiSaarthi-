@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — AIIA Clinical Trials Management System | Ministry of Ayush</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts: Plus Jakarta Sans + Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Animated gradient background */
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .bg-animated {
+      background: linear-gradient(135deg, #022c22 0%, #064e3b 30%, #065f46 60%, #031e17 100%);
+      background-size: 300% 300%;
+      animation: gradientShift 12s ease infinite;
+    }
+
+    /* Floating leaf particles */
+    @keyframes float {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.4; }
+      90%  { opacity: 0.2; }
+      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+    }
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      font-size: 1.1rem;
+      animation: float linear infinite;
+    }
+
+    /* Glassmorphism login card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    /* Input focus ring */
+    .ctms-input:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Role-specific glow colors on card hover */
+    .role-pi     { border-color: rgba(217, 119, 6, 0.5); }
+    .role-iec    { border-color: rgba(20, 184, 166, 0.5); }
+    .role-pvcc   { border-color: rgba(239, 68, 68, 0.5); }
+    .role-reg    { border-color: rgba(99, 102, 241, 0.5); }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+    .demo-card:hover { transform: scale(1.02); transition: transform 0.2s ease; }
+  </style>
+</head>
+<body class="min-h-screen bg-animated flex flex-col items-center justify-center relative overflow-hidden">
+
+  <!-- Animated Leaf Particles -->
+  <div id="particles" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+
+  <!-- Government Top Bar -->
+  <div class="fixed top-0 left-0 right-0 z-50 bg-[#022c22]/90 backdrop-blur-sm border-b border-emerald-800/50 px-6 py-2 flex items-center justify-between text-xs">
+    <div class="flex items-center space-x-2 text-emerald-300">
+      <i class="fa-solid fa-landmark-flag text-amber-400"></i>
+      <span class="font-semibold">Ministry of Ayush • Government of India</span>
+      <span class="text-emerald-600">|</span>
+      <span class="text-emerald-400">All India Institute of Ayurveda (AIIA), New Delhi</span>
+    </div>
+    <div class="flex items-center space-x-3 text-emerald-300/70">
+      <span class="flex items-center space-x-1.5">
+        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>🟢 HL7 FHIR R4 / ABDM Ready</span>
+      </span>
+      <span>🛡️ ALCOA+ Audit Active</span>
+      <span>📜 CDISC (SDTM) Aligned</span>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN LOGIN CARD                                                       -->
+  <!-- ===================================================================== -->
+  <div class="w-full max-w-md px-4 mt-12 mb-6 fade-in-up z-10">
+    
+    <!-- Logo / Branding -->
+    <div class="text-center mb-6">
+      <div class="inline-flex h-16 w-16 rounded-2xl bg-gradient-to-br from-amber-500 to-emerald-700 p-0.5 shadow-xl mb-3">
+        <div class="h-full w-full bg-[#064e3b] rounded-[14px] flex items-center justify-center text-amber-400 text-3xl">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+      </div>
+      <h1 class="text-2xl font-bold text-white font-heritage tracking-tight leading-snug">
+        AIIA Clinical Trials System
+      </h1>
+      <p class="text-sm text-emerald-300 mt-1 font-medium">
+        Research & Pharmacovigilance Gateway
+      </p>
+    </div>
+
+    <!-- Glassmorphism Login Card -->
+    <div class="glass-card rounded-2xl p-7 shadow-2xl">
+      <h2 class="text-base font-bold text-white mb-1 flex items-center space-x-2">
+        <i class="fa-solid fa-lock-open text-amber-400 text-sm"></i>
+        <span>Secure Staff Authentication</span>
+      </h2>
+      <p class="text-xs text-emerald-200/70 mb-5">
+        Enter your authorised AIIA credentials to access the CTMS portal.
+      </p>
+
+      <!-- Error / Success Message -->
+      <div id="authMessage" class="hidden mb-4 px-3 py-2.5 rounded-lg text-xs font-semibold"></div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+        
+        <!-- Email -->
+        <div>
+          <label class="block text-[11px] font-bold text-emerald-200 uppercase tracking-wider mb-1.5">
+            Institutional Email / Staff ID
+          </label>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-3 top-2.5 text-emerald-400 text-xs"></i>
+            <input type="email" id="loginEmail" required
+                   placeholder="pi.nesari@aiia.gov.in"
+                   autocomplete="email"
+                   class="ctms-input w-full bg-white/10 border border-white/20 text-white placeholder-white/30 text-sm px-9 py-2.5 rounded-lg transition-all">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-[11px] font-bold text-emerald-200 uppercase tracking-wider mb-1.5">
+            Password
+          </label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-3 top-2.5 text-emerald-400 text-xs"></i>
+            <input type="password" id="loginPassword" required
+                   placeholder="••••••••••••"
+                   autocomplete="current-password"
+                   class="ctms-input w-full bg-white/10 border border-white/20 text-white placeholder-white/30 text-sm px-9 py-2.5 rounded-lg pr-10 transition-all">
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-2.5 text-emerald-400 hover:text-emerald-200 text-xs transition-colors">
+              <i id="passwordEyeIcon" class="fa-solid fa-eye-slash"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="loginBtn"
+                class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold py-3 rounded-lg shadow-lg flex items-center justify-center space-x-2 text-sm transition-all mt-2">
+          <i id="loginIcon" class="fa-solid fa-arrow-right-to-bracket text-amber-300"></i>
+          <span id="loginBtnText">Sign In to CTMS Portal</span>
+        </button>
+      </form>
+
+      <!-- DPDP / Security Note -->
+      <div class="mt-5 pt-4 border-t border-white/10 text-center text-[11px] text-emerald-300/60 flex items-center justify-center space-x-1.5">
+        <i class="fa-solid fa-shield-check text-emerald-400"></i>
+        <span>Protected by DPDP Act 2023 & GCP ICH E6(R2) | 256-bit JWT Session Encryption</span>
+      </div>
+    </div>
+
+    <!-- Demo Credentials Section -->
+    <div class="mt-5 space-y-2">
+      <p class="text-center text-xs font-semibold text-emerald-300/70 uppercase tracking-wider mb-2">
+        Demo Credentials (1-Click Presets)
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <!-- Investigator Card -->
+        <button type="button" onclick="fillDemo('pi@aiia.gov.in', 'admin123')"
+                class="demo-card glass-card role-pi text-left p-3 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+          <div class="flex items-center space-x-2 mb-1">
+            <div class="h-5 w-5 rounded bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-[10px]">
+              <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <span class="text-[10px] font-extrabold text-emerald-300">Investigator</span>
+          </div>
+          <p class="text-[10px] text-white font-medium truncate">Dr. Rajesh Sharma</p>
+          <p class="text-[9px] text-white/50 font-mono">pi@aiia.gov.in</p>
+        </button>
+
+        <!-- GCP Auditor Card -->
+        <button type="button" onclick="fillDemo('auditor@ayush.gov.in', 'audit123')"
+                class="demo-card glass-card role-iec text-left p-3 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+          <div class="flex items-center space-x-2 mb-1">
+            <div class="h-5 w-5 rounded bg-amber-500/20 text-amber-300 flex items-center justify-center text-[10px]">
+              <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+            <span class="text-[10px] font-extrabold text-amber-300">GCP Auditor</span>
+          </div>
+          <p class="text-[10px] text-white font-medium truncate">Dr. Ananya Sen</p>
+          <p class="text-[9px] text-white/50 font-mono">auditor@ayush.gov.in</p>
+        </button>
+
+        <!-- Ministry Admin Card -->
+        <button type="button" onclick="fillDemo('admin@ayush.gov.in', 'ayush123')"
+                class="demo-card glass-card role-pvcc text-left p-3 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+          <div class="flex items-center space-x-2 mb-1">
+            <div class="h-5 w-5 rounded bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-[10px]">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <span class="text-[10px] font-extrabold text-cyan-300">Ministry Admin</span>
+          </div>
+          <p class="text-[10px] text-white font-medium truncate">Shri V. K. Murthy</p>
+          <p class="text-[9px] text-white/50 font-mono">admin@ayush.gov.in</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="z-10 text-center text-[10px] text-emerald-400/40 pb-4 px-4">
+    AIIA CTMS v2.0 • Ministry of Ayush, Government of India •
+    NDCT 2019 | HL7 FHIR R4 | CDISC SDTM | GCP ICH E6(R2)
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT                                                            -->
+  <!-- ===================================================================== -->
+  <script>
+    // If already authenticated (session exists), redirect immediately to dashboard
+    (function checkExistingSession() {
+      try {
+        const existingUser = sessionStorage.getItem('ctms_user');
+        if (existingUser) {
+          window.location.replace('/index.html');
+          return;
+        }
+      } catch(e) { /* sessionStorage not available — proceed to login */ }
+    })();
+
+    // Spawn floating leaf particles
+    (function spawnParticles() {
+      const emojis = ['🌿', '🍃', '🌱', '🪴', '✦', '⬥'];
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 20; i++) {
+        const el = document.createElement('span');
+        el.className = 'particle';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = `${Math.random() * 100}%`;
+        el.style.bottom = `-5%`;
+        el.style.animationDuration = `${10 + Math.random() * 20}s`;
+        el.style.animationDelay = `${Math.random() * 15}s`;
+        el.style.fontSize = `${0.6 + Math.random() * 1}rem`;
+        el.style.opacity = '0';
+        container.appendChild(el);
+      }
+    })();
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('loginPassword');
+      const icon  = document.getElementById('passwordEyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      }
+    }
+
+    function fillDemo(email, password) {
+      document.getElementById('loginEmail').value = email;
+      document.getElementById('loginPassword').value = password;
+      document.getElementById('loginEmail').focus();
+    }
+
+    function showMessage(text, type) {
+      const el = document.getElementById('authMessage');
+      el.textContent = text;
+      el.className = `mb-4 px-3 py-2.5 rounded-lg text-xs font-semibold ${
+        type === 'error'
+          ? 'bg-rose-900/60 text-rose-200 border border-rose-600/40'
+          : 'bg-emerald-900/60 text-emerald-200 border border-emerald-600/40'
+      }`;
+      el.classList.remove('hidden');
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const btn      = document.getElementById('loginBtn');
+      const btnText  = document.getElementById('loginBtnText');
+      const icon     = document.getElementById('loginIcon');
+
+      // Loading state
+      btn.disabled = true;
+      btnText.textContent = 'Authenticating…';
+      icon.className = 'fa-solid fa-spinner animate-spin';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          // Store public profile in sessionStorage for the dashboard to read
+          sessionStorage.setItem('ctms_user', JSON.stringify(data.user));
+          let activeRole = 'pi';
+          const r = (data.user.role || '').toLowerCase();
+          const e = (data.user.email || '').toLowerCase();
+          if (r.includes('admin') || r.includes('ministry') || e.includes('admin')) {
+            activeRole = 'admin';
+          } else if (r.includes('audit') || r.includes('compliance') || e.includes('auditor')) {
+            activeRole = 'auditor';
+          }
+          sessionStorage.setItem('ctms_active_role', activeRole);
+          showMessage(`✓ Welcome, ${data.user.name}. Redirecting to dashboard…`, 'success');
+          setTimeout(() => {
+            window.location.href = '/index.html';
+          }, 900);
+        } else {
+          showMessage('✗ ' + data.error, 'error');
+          btn.disabled = false;
+          btnText.textContent = 'Sign In to CTMS Portal';
+          icon.className = 'fa-solid fa-arrow-right-to-bracket text-amber-300';
+        }
+      } catch (err) {
+        showMessage('✗ Network error. Is the CTMS server running?', 'error');
+        btn.disabled = false;
+        btnText.textContent = 'Sign In to CTMS Portal';
+        icon.className = 'fa-solid fa-arrow-right-to-bracket text-amber-300';
+      }
+    }
+  </script>
+</body>
+</html>
