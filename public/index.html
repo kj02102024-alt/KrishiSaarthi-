@@ -2742,6 +2742,13 @@
         #holoKaphaLbl { animation-delay: 0.8s; }
         #holoPittaLbl { animation-delay: 1.6s; }
 
+
+        /* ══ GUIDED TOUR STYLES ══ */
+        .tour-dot { width:8px; height:8px; border-radius:50%; background:#334155; border:1.5px solid #475569; transition:all 0.3s ease; cursor:pointer; }
+        .tour-dot.active { background:#7c3aed; border-color:#7c3aed; transform:scale(1.35); box-shadow:0 0 0 3px rgba(124,58,237,0.2); }
+        .tour-dot.done { background:#4f46e5; border-color:#4f46e5; }
+        #guidedTourModal:not(.hidden) { display:flex; }
+        /* ══ /GUIDED TOUR STYLES ══ */
     </style>
 </head>
 <body class="min-h-screen relative flex flex-col">
@@ -2860,6 +2867,15 @@
                     <option value="mr">मराठी (Marathi)</option>
                 </select>
             </div>
+            <!-- ══ Tour Button ══ -->
+            <button type="button" id="startTourBtn"
+                    onclick="event.preventDefault(); startGuidedTour()"
+                    class="ml-2 flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-bold tracking-wide bg-violet-600/20 hover:bg-violet-600/35 border border-violet-500/40 hover:border-violet-500/70 text-violet-300 hover:text-violet-200 transition-all duration-200 cursor-pointer select-none shadow-sm"
+                    title="Take a guided tour of the AIIA CTMS Dashboard">
+                <i class="fa-solid fa-circle-question text-[10px]"></i>
+                <span class="hidden sm:inline">Take a Tour</span>
+                <span class="sm:hidden">Tour</span>
+            </button>
         </div>
     </header>
 
@@ -6142,6 +6158,74 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- ══ FEATURE: Clinical Research Citations Expander ══ -->
+                    <div id="hdiCitationsExpander" class="w-full mt-3">
+                        <button
+                            type="button"
+                            onclick="event.preventDefault(); toggleHdiCitations()"
+                            class="w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl
+                                   bg-indigo-500/10 hover:bg-indigo-500/20
+                                   border border-indigo-500/25 hover:border-indigo-500/45
+                                   text-indigo-300 dark:text-indigo-300
+                                   text-[11px] font-semibold tracking-wide
+                                   transition-all duration-200 cursor-pointer select-none"
+                            aria-expanded="false"
+                            aria-controls="hdiCitationsBody"
+                            id="hdiCitationsToggleBtn">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-microscope text-[11px]"></i>
+                                🔬 View Clinical Research Citations
+                                <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-indigo-500/20 border border-indigo-500/30 text-indigo-300">3 Papers Found</span>
+                            </span>
+                            <i id="hdiCitationsChevron" class="fa-solid fa-chevron-down text-[10px] transition-transform duration-300"></i>
+                        </button>
+
+                        <div id="hdiCitationsBody"
+                             class="hidden mt-2 space-y-2 overflow-hidden transition-all duration-300">
+
+                            <!-- Paper 1 -->
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-indigo-500/40 transition-colors duration-200">
+                                <div class="mt-0.5 flex-shrink-0 w-7 h-7 rounded-full bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-[10px] font-bold">1</div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[11px] font-semibold text-slate-100 leading-snug">In vivo Pharmacokinetic Modulation of Metformin by <em>Withania Somnifera</em> Extract</p>
+                                    <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-mono bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"><i class="fa-solid fa-id-badge text-[8px]"></i> PubMed: 34819201</span>
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-mono bg-amber-500/10 border border-amber-500/20 text-amber-300"><i class="fa-solid fa-leaf text-[8px]"></i> AYUSH-CTRI/2025/08</span>
+                                    </div>
+                                </div>
+                                <a href="https://pubmed.ncbi.nlm.nih.gov/34819201/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="flex-shrink-0 mt-0.5 flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 hover:bg-indigo-600/30 border border-slate-700 hover:border-indigo-500/50 text-slate-400 hover:text-indigo-300 transition-all duration-200" title="Open on PubMed"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+                            </div>
+
+                            <!-- Paper 2 -->
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-indigo-500/40 transition-colors duration-200">
+                                <div class="mt-0.5 flex-shrink-0 w-7 h-7 rounded-full bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400 text-[10px] font-bold">2</div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[11px] font-semibold text-slate-100 leading-snug">Cytochrome P450 (CYP3A4/2D6) Inhibition Profiles of Polyherbal Formulations</p>
+                                    <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-mono bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"><i class="fa-solid fa-book-open text-[8px]"></i> Journal of Ethnopharmacology</span>
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-mono bg-violet-500/10 border border-violet-500/20 text-violet-300"><i class="fa-solid fa-hashtag text-[8px]"></i> Ref: JEP-2024-892</span>
+                                    </div>
+                                </div>
+                                <a href="https://www.sciencedirect.com/journal/journal-of-ethnopharmacology" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="flex-shrink-0 mt-0.5 flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 hover:bg-indigo-600/30 border border-slate-700 hover:border-indigo-500/50 text-slate-400 hover:text-indigo-300 transition-all duration-200" title="Open Journal"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+                            </div>
+
+                            <!-- Paper 3 -->
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-indigo-500/40 transition-colors duration-200">
+                                <div class="mt-0.5 flex-shrink-0 w-7 h-7 rounded-full bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 text-[10px] font-bold">3</div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[11px] font-semibold text-slate-100 leading-snug">P-glycoprotein Transporter Synergy in Herb-Drug Co-administration</p>
+                                    <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-mono bg-rose-500/10 border border-rose-500/20 text-rose-400"><i class="fa-solid fa-flask text-[8px]"></i> Phytomedicine Safety Ledger</span>
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-mono bg-orange-500/10 border border-orange-500/20 text-orange-300"><i class="fa-solid fa-dna text-[8px]"></i> PMCID: PMC812039</span>
+                                    </div>
+                                </div>
+                                <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC812039/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="flex-shrink-0 mt-0.5 flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 hover:bg-indigo-600/30 border border-slate-700 hover:border-indigo-500/50 text-slate-400 hover:text-indigo-300 transition-all duration-200" title="Open on PubMed Central"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- ══ /FEATURE: Clinical Research Citations Expander ══ -->
 
                     <!-- Clinical Mechanism, CYP Pathways & PI Guidance (Full Width) -->
                     <div class="w-full space-y-3">
@@ -15065,6 +15149,124 @@ e9a4f210c817290dae81290384bcda90184b2e510b9814890281ba0174cd
             hdi3dGraphInstance.graphData(graphData);
         }
 
+    
+        // ══════════════════════════════════════════════════════════════════════
+        // FEATURE 1: CITATIONS EXPANDER
+        // ══════════════════════════════════════════════════════════════════════
+        function toggleHdiCitations() {
+            const body = document.getElementById('hdiCitationsBody');
+            const chevron = document.getElementById('hdiCitationsChevron');
+            const btn = document.getElementById('hdiCitationsToggleBtn');
+            if (!body) return;
+            const isOpen = !body.classList.contains('hidden');
+            if (isOpen) {
+                body.classList.add('hidden');
+                if (chevron) chevron.classList.remove('rotate-180');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            } else {
+                body.classList.remove('hidden');
+                if (chevron) chevron.classList.add('rotate-180');
+                if (btn) btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        // ══════════════════════════════════════════════════════════════════════
+        // FEATURE 2: GUIDED TOUR ENGINE
+        // ══════════════════════════════════════════════════════════════════════
+        const _tourSteps = [
+            {
+                icon: '<i class="fa-solid fa-chart-line text-violet-400"></i>',
+                iconBg: 'bg-violet-500/10 border-violet-500/25',
+                title: 'Clinical Overview &amp; Trial Pipeline',
+                desc: 'The <strong>Summary</strong> tab gives you a live view of all active Ayurveda clinical trials — from Phase I herb safety studies to Phase III multi-centre efficacy trials. Track recruitment status, ARGUS pipeline stages, KPI counters, and Ministry of Ayush protocol compliance in real time.',
+                tag: '<i class="fa-solid fa-arrow-pointer text-[9px]"></i> Click &ldquo;Overview&rdquo; in the sidebar to explore',
+                tagColor: 'bg-violet-500/10 border-violet-500/20 text-violet-400',
+            },
+            {
+                icon: '<i class="fa-solid fa-atom text-cyan-400"></i>',
+                iconBg: 'bg-cyan-500/10 border-cyan-500/25',
+                title: 'Herb-Drug Interaction &amp; 3D Constellation',
+                desc: 'The <strong>HDI Safety Checker</strong> uses AI pharmacokinetic modelling to predict interaction risk between Ayurvedic formulations and allopathic drugs. The <strong>3D Constellation Graph</strong> visualises CYP450 enzyme pathways and transporter affinities in an interactive 3D node space.',
+                tag: '<i class="fa-solid fa-circle-nodes text-[9px]"></i> Navigate to the &ldquo;HDI Analysis&rdquo; tab',
+                tagColor: 'bg-cyan-500/10 border-cyan-500/20 text-cyan-400',
+            },
+            {
+                icon: '<i class="fa-solid fa-map-location-dot text-emerald-400"></i>',
+                iconBg: 'bg-emerald-500/10 border-emerald-500/25',
+                title: 'National AYUSH CTRI Registry Map',
+                desc: 'The <strong>CTRI Registry</strong> tab displays a live geospatial map of all registered Ayurveda clinical trial sites across India. Each pin shows site-level recruitment data, GCP compliance scores, and CDSCO sync status.',
+                tag: '<i class="fa-solid fa-location-dot text-[9px]"></i> Explore the &ldquo;CTRI Registry&rdquo; tab',
+                tagColor: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
+            },
+            {
+                icon: '<i class="fa-solid fa-shield-halved text-amber-400"></i>',
+                iconBg: 'bg-amber-500/10 border-amber-500/25',
+                title: 'Live Audit Ledger &amp; Compliance',
+                desc: 'The <strong>Audit &amp; Telemetry</strong> tab provides an ICH GCP E6(R2) validated, tamper-proof cryptographic audit trail. Every data entry and adverse event report is hashed into an immutable ledger with real-time CDSCO &amp; PvPI integration.',
+                tag: '<i class="fa-solid fa-lock text-[9px]"></i> Visit &ldquo;Audit Ledger&rdquo; in the sidebar',
+                tagColor: 'bg-amber-500/10 border-amber-500/20 text-amber-400',
+            },
+        ];
+        let _tourCurrentStep = 0;
+
+        function startGuidedTour() {
+            _tourCurrentStep = 0;
+            _renderTourStep();
+            const modal = document.getElementById('guidedTourModal');
+            if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+        }
+        function closeTour() {
+            const modal = document.getElementById('guidedTourModal');
+            if (modal) modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        function tourNavigate(dir) {
+            const next = _tourCurrentStep + dir;
+            if (next < 0 || next >= _tourSteps.length) return;
+            _tourCurrentStep = next;
+            _renderTourStep();
+        }
+        function _renderTourStep() {
+            const step = _tourSteps[_tourCurrentStep];
+            const total = _tourSteps.length;
+            const idx = _tourCurrentStep;
+            const el = (id) => document.getElementById(id);
+            if (el('tourStepLabel'))  el('tourStepLabel').textContent  = 'Step ' + (idx+1) + ' of ' + total;
+            if (el('tourStepTitle'))  el('tourStepTitle').innerHTML     = step.title;
+            if (el('tourStepDesc'))   el('tourStepDesc').innerHTML      = step.desc;
+            if (el('tourStepTag')) {
+                el('tourStepTag').innerHTML  = step.tag;
+                el('tourStepTag').className = 'mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold border ' + step.tagColor;
+            }
+            if (el('tourStepIcon')) {
+                el('tourStepIcon').innerHTML = step.icon;
+                el('tourStepIcon').className = 'flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl border ' + step.iconBg;
+            }
+            if (el('tourProgressBar')) el('tourProgressBar').style.width = (((idx+1)/total)*100) + '%';
+            document.querySelectorAll('.tour-dot').forEach(function(dot, i) {
+                dot.classList.remove('active','done');
+                if (i < idx)  dot.classList.add('done');
+                if (i === idx) dot.classList.add('active');
+            });
+            const prevBtn = el('tourPrevBtn');
+            const nextBtn = el('tourNextBtn');
+            if (prevBtn) prevBtn.disabled = (idx === 0);
+            if (nextBtn) {
+                if (idx === total - 1) {
+                    nextBtn.innerHTML = '<i class="fa-solid fa-check text-[10px]"></i> Finish Tour';
+                    nextBtn.onclick = function(e) { e.preventDefault(); closeTour(); };
+                } else {
+                    nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right text-[10px]"></i>';
+                    nextBtn.onclick = function(e) { e.preventDefault(); tourNavigate(1); };
+                }
+            }
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const m = document.getElementById('guidedTourModal');
+                if (m && !m.classList.contains('hidden')) closeTour();
+            }
+        });
     </script>
 
     <!-- ========================================================================= -->
@@ -15230,5 +15432,49 @@ e9a4f210c817290dae81290384bcda90184b2e510b9814890281ba0174cd
         </div>
     </div>
 
+
+    <!-- ══ GUIDED TOUR MODAL ══ -->
+    <div id="guidedTourModal" class="hidden fixed inset-0 z-[99999] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="tourModalTitle">
+        <div id="tourModalBackdrop" onclick="event.preventDefault(); closeTour()" class="absolute inset-0 bg-black/70 dark:bg-black/80 backdrop-blur-sm transition-opacity duration-300"></div>
+        <div class="relative z-10 w-full max-w-lg mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300">
+            <div class="h-1 w-full bg-gradient-to-r from-violet-500 via-indigo-500 to-emerald-500"></div>
+            <div class="px-6 pt-5 pb-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full bg-violet-500/15 border border-violet-500/30 flex items-center justify-center"><i class="fa-solid fa-compass text-violet-400 text-sm"></i></div>
+                    <div>
+                        <h2 id="tourModalTitle" class="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-wide">AIIA CTMS Guided Tour</h2>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400">Ministry of Ayush • Clinical Trials Platform</p>
+                    </div>
+                </div>
+                <button type="button" onclick="event.preventDefault(); closeTour()" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-150 cursor-pointer"><i class="fa-solid fa-xmark text-xs"></i></button>
+            </div>
+            <div class="px-6 pt-4">
+                <div class="flex items-center gap-1.5 mb-1"><span id="tourStepLabel" class="text-[10px] font-bold text-violet-500 dark:text-violet-400 uppercase tracking-widest">Step 1 of 4</span></div>
+                <div class="w-full h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden"><div id="tourProgressBar" class="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 transition-all duration-500" style="width:25%"></div></div>
+                <div class="flex items-center justify-center gap-2 mt-3">
+                    <div class="tour-dot" data-step="0"></div>
+                    <div class="tour-dot" data-step="1"></div>
+                    <div class="tour-dot" data-step="2"></div>
+                    <div class="tour-dot" data-step="3"></div>
+                </div>
+            </div>
+            <div class="px-6 py-5 min-h-[200px]">
+                <div class="flex items-start gap-4">
+                    <div id="tourStepIcon" class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-violet-500/10 border border-violet-500/25"><i class="fa-solid fa-chart-line text-violet-400"></i></div>
+                    <div class="flex-1">
+                        <h3 id="tourStepTitle" class="text-base font-bold text-slate-900 dark:text-slate-100 leading-tight mb-2">Clinical Overview &amp; Trial Pipeline</h3>
+                        <p id="tourStepDesc" class="text-[12.5px] text-slate-600 dark:text-slate-400 leading-relaxed">The <strong>Summary</strong> tab gives you a live view of all active Ayurveda clinical trials. Track recruitment status, ARGUS pipeline stages, KPI counters, and Ministry of Ayush protocol compliance in real time.</p>
+                        <div id="tourStepTag" class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-violet-500/10 border border-violet-500/20 text-violet-400"><i class="fa-solid fa-arrow-pointer text-[9px]"></i> Click "Overview" in the sidebar to explore</div>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 pb-5 flex items-center justify-between gap-3 border-t border-slate-100 dark:border-slate-800 pt-4">
+                <button type="button" id="tourPrevBtn" onclick="event.preventDefault(); tourNavigate(-1)" class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 cursor-pointer" disabled><i class="fa-solid fa-arrow-left text-[10px]"></i> Previous</button>
+                <button type="button" onclick="event.preventDefault(); closeTour()" class="text-[10.5px] text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 underline underline-offset-2 transition-colors cursor-pointer">Skip Tour</button>
+                <button type="button" id="tourNextBtn" onclick="event.preventDefault(); tourNavigate(1)" class="flex items-center gap-1.5 px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-sm transition-all duration-150 cursor-pointer">Next <i class="fa-solid fa-arrow-right text-[10px]"></i></button>
+            </div>
+        </div>
+    </div>
+    <!-- ══ /GUIDED TOUR MODAL ══ -->
 </body>
 </html>
