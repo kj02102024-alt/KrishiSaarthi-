@@ -134,6 +134,7 @@ export async function seedInitialData(force = false) {
         vitals: {
           systolicBP: 122,
           diastolicBP: 80,
+          fastingBloodSugar: 92,
           heartRate: 74,
           respiratoryRate: 16,
           temperature: 98.4,
@@ -164,6 +165,7 @@ export async function seedInitialData(force = false) {
         vitals: {
           systolicBP: 130,
           diastolicBP: 84,
+          fastingBloodSugar: 98,
           heartRate: 78,
           respiratoryRate: 18,
           temperature: 98.6,
@@ -194,6 +196,7 @@ export async function seedInitialData(force = false) {
         vitals: {
           systolicBP: 138,
           diastolicBP: 88,
+          fastingBloodSugar: 114,
           heartRate: 72,
           respiratoryRate: 15,
           temperature: 98.2,
@@ -224,6 +227,7 @@ export async function seedInitialData(force = false) {
         vitals: {
           systolicBP: 118,
           diastolicBP: 76,
+          fastingBloodSugar: 88,
           heartRate: 70,
           respiratoryRate: 16,
           temperature: 98.5,
@@ -254,6 +258,7 @@ export async function seedInitialData(force = false) {
         vitals: {
           systolicBP: 126,
           diastolicBP: 82,
+          fastingBloodSugar: 104,
           heartRate: 76,
           respiratoryRate: 17,
           temperature: 98.6,
@@ -284,6 +289,7 @@ export async function seedInitialData(force = false) {
         vitals: {
           systolicBP: 114,
           diastolicBP: 74,
+          fastingBloodSugar: 85,
           heartRate: 68,
           respiratoryRate: 15,
           temperature: 98.3,

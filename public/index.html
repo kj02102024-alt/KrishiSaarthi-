@@ -2867,6 +2867,25 @@
                     <option value="mr">मराठी (Marathi)</option>
                 </select>
             </div>
+            <!-- ══ DPDP Act Privacy Shield Anonymize Data Toggle Button ══ -->
+            <button
+                type="button"
+                id="dpdpAnonymizeBtn"
+                onclick="event.preventDefault(); toggleDpdpAnonymization()"
+                class="ml-2 flex items-center gap-1.5 px-3 py-1 rounded-full
+                       text-[10.5px] font-bold tracking-wide
+                       bg-emerald-500/10 hover:bg-emerald-500/20
+                       border border-emerald-500/40 hover:border-emerald-500/70
+                       text-emerald-700 dark:text-emerald-300
+                       transition-all duration-200 cursor-pointer select-none shadow-sm"
+                title="DPDP Act 2023: Toggle Patient Identity Masking / Anonymization"
+                aria-pressed="true">
+                <i id="dpdpShieldIcon" class="fa-solid fa-user-shield text-[10px] text-emerald-500 dark:text-emerald-400"></i>
+                <span class="hidden sm:inline">Anonymize Data</span>
+                <span class="sm:hidden">Privacy</span>
+                <span id="dpdpStatusPill" class="px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">ON</span>
+            </button>
+
             <!-- ══ Tour Button ══ -->
             <button type="button" id="startTourBtn"
                     onclick="event.preventDefault(); startGuidedTour()"
@@ -3731,8 +3750,8 @@
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                                     <td class="py-3 px-3 font-mono text-emerald-600 dark:text-emerald-400 font-bold">DOSE-2026-8491</td>
                                     <td class="py-3 px-3">
-                                        <div class="font-bold text-slate-900 dark:text-slate-100">Rajesh Kumar</div>
-                                        <div class="text-[10px] text-slate-500 font-mono">SUBJ-2026-0891 • 42M</div>
+                                        <div class="font-bold text-slate-900 dark:text-slate-100" data-patient-name="Rajesh Kumar">R**** K****</div>
+                                        <div class="text-[10px] text-slate-500 font-mono" data-patient-id="SUBJ-2026-0891" data-patient-meta="SUBJ-2026-0891 • 42M">SUBJ-****0891 • 42M</div>
                                     </td>
                                     <td class="py-3 px-3 font-medium text-slate-800 dark:text-slate-200">
                                         Ashwagandha Ghanvati 500mg BID
@@ -3752,8 +3771,8 @@
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                                     <td class="py-3 px-3 font-mono text-emerald-600 dark:text-emerald-400 font-bold">DOSE-2026-8492</td>
                                     <td class="py-3 px-3">
-                                        <div class="font-bold text-slate-900 dark:text-slate-100">Sunita Devi</div>
-                                        <div class="text-[10px] text-slate-500 font-mono">SUBJ-2026-0412 • 38F</div>
+                                        <div class="font-bold text-slate-900 dark:text-slate-100" data-patient-name="Sunita Devi">S**** D****</div>
+                                        <div class="text-[10px] text-slate-500 font-mono" data-patient-id="SUBJ-2026-0412" data-patient-meta="SUBJ-2026-0412 • 38F">SUBJ-****0412 • 38F</div>
                                     </td>
                                     <td class="py-3 px-3 font-medium text-slate-800 dark:text-slate-200">
                                         Guduchi Kwath 250mg TID
@@ -3773,8 +3792,8 @@
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                                     <td class="py-3 px-3 font-mono text-emerald-600 dark:text-emerald-400 font-bold">DOSE-2026-8493</td>
                                     <td class="py-3 px-3">
-                                        <div class="font-bold text-slate-900 dark:text-slate-100">Amit Patel</div>
-                                        <div class="text-[10px] text-slate-500 font-mono">SUBJ-2026-0105 • 51M</div>
+                                        <div class="font-bold text-slate-900 dark:text-slate-100" data-patient-name="Amit Patel">A**** P****</div>
+                                        <div class="text-[10px] text-slate-500 font-mono" data-patient-id="SUBJ-2026-0105" data-patient-meta="SUBJ-2026-0105 • 51M">SUBJ-****0105 • 51M</div>
                                     </td>
                                     <td class="py-3 px-3 font-medium text-slate-800 dark:text-slate-200">
                                         101-Avartana Kshirabala 10ml
@@ -3794,8 +3813,8 @@
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                                     <td class="py-3 px-3 font-mono text-emerald-600 dark:text-emerald-400 font-bold">DOSE-2026-8494</td>
                                     <td class="py-3 px-3">
-                                        <div class="font-bold text-slate-900 dark:text-slate-100">Priya Sharma</div>
-                                        <div class="text-[10px] text-slate-500 font-mono">SUBJ-2026-0773 • 29F</div>
+                                        <div class="font-bold text-slate-900 dark:text-slate-100" data-patient-name="Priya Sharma">P**** S****</div>
+                                        <div class="text-[10px] text-slate-500 font-mono" data-patient-id="SUBJ-2026-0773" data-patient-meta="SUBJ-2026-0773 • 29F">SUBJ-****0773 • 29F</div>
                                     </td>
                                     <td class="py-3 px-3 font-medium text-slate-800 dark:text-slate-200">
                                         Brahmi Vati 300mg BID
@@ -8302,6 +8321,7 @@
         // DATA MODEL & INITIAL SEEDING
         // =====================================================================
         const state = {
+            dpdpAnonymized: true,
             currentUser: {
                 email: 'pi@aiia.gov.in',
                 name: 'Dr. Rajesh Sharma',
@@ -9930,10 +9950,11 @@
             {
                 id: 'SUB-2026-1420',
                 name: 'Rajesh Sharma',
-                maskedName: 'R***h S***a',
+                maskedName: 'R**** S****',
                 age: 44,
                 gender: 'M',
                 abhaId: '91-4821-3940-9012',
+                vitals: { systolicBP: 122, diastolicBP: 80, fastingBloodSugar: 94, heartRate: 74, bpStr: '122/80 mmHg', fbsStr: '94 mg/dL' },
                 prakriti: 'Vata-Pitta',
                 prakritiBadge: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
                 trialId: 'CTRI/2026/08/0421',
@@ -9950,10 +9971,11 @@
             {
                 id: 'SUB-2026-1419',
                 name: 'Priya Verma',
-                maskedName: 'P***a V***a',
+                maskedName: 'P**** V****',
                 age: 38,
                 gender: 'F',
                 abhaId: '91-3829-1029-4820',
+                vitals: { systolicBP: 118, diastolicBP: 76, fastingBloodSugar: 88, heartRate: 70, bpStr: '118/76 mmHg', fbsStr: '88 mg/dL' },
                 prakriti: 'Pitta-Kapha',
                 prakritiBadge: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
                 trialId: 'CTRI/2026/04/0112',
@@ -9970,10 +9992,11 @@
             {
                 id: 'SUB-2026-1418',
                 name: 'Anand Kulkarni',
-                maskedName: 'A***d K***i',
+                maskedName: 'A**** K****',
                 age: 52,
                 gender: 'M',
                 abhaId: '91-5920-4820-1928',
+                vitals: { systolicBP: 130, diastolicBP: 84, fastingBloodSugar: 106, heartRate: 76, bpStr: '130/84 mmHg', fbsStr: '106 mg/dL' },
                 prakriti: 'Kapha-Vata',
                 prakritiBadge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
                 trialId: 'CTRI/2026/07/0319',
@@ -9990,10 +10013,11 @@
             {
                 id: 'SUB-2026-1417',
                 name: 'Meenakshi Iyer',
-                maskedName: 'M***i I***r',
+                maskedName: 'M**** I****',
                 age: 29,
                 gender: 'F',
                 abhaId: '91-1829-4720-3819',
+                vitals: { systolicBP: 114, diastolicBP: 74, fastingBloodSugar: 90, heartRate: 68, bpStr: '114/74 mmHg', fbsStr: '90 mg/dL' },
                 prakriti: 'Tridoshic (Sama)',
                 prakritiBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
                 trialId: 'CTRI/2026/05/0220',
@@ -10010,10 +10034,11 @@
             {
                 id: 'SUB-2026-1416',
                 name: 'Suresh Patel',
-                maskedName: 'S***h P***l',
+                maskedName: 'S**** P****',
                 age: 61,
                 gender: 'M',
                 abhaId: '91-8492-1940-2819',
+                vitals: { systolicBP: 126, diastolicBP: 82, fastingBloodSugar: 112, heartRate: 74, bpStr: '126/82 mmHg', fbsStr: '112 mg/dL' },
                 prakriti: 'Vata-Kapha',
                 prakritiBadge: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
                 trialId: 'CTRI/2026/09/0550',
@@ -10032,8 +10057,13 @@
         function populatePatientCohortTable(patients = cohortPatients) {
             const tbody = document.getElementById('patientCohortTableBody');
             if (!tbody) return;
+            const isAnon = state.dpdpAnonymized !== false;
 
-            tbody.innerHTML = patients.map(p => `
+            tbody.innerHTML = patients.map(p => {
+                const displayName = isAnon ? (p.maskedName || maskName(p.name)) : p.name;
+                const displayId = isAnon ? maskId(p.id) : p.id;
+                const displayAbha = isAnon ? maskAbha(p.abhaId) : p.abhaId;
+                return `
                 <tr class="hover:bg-slate-800/40 transition-colors">
                     <td class="p-3.5">
                         <div class="flex items-center gap-2.5">
@@ -10042,11 +10072,11 @@
                             </div>
                             <div>
                                 <div class="font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5 font-mono">
-                                    ${p.id}
-                                    <span class="text-[10px] text-slate-600 dark:text-slate-400 font-sans">(${p.maskedName}, ${p.age}${p.gender})</span>
+                                    <span class="patient-id-display">${displayId}</span>
+                                    <span class="text-[10px] text-slate-600 dark:text-slate-400 font-sans">(${displayName}, ${p.age}${p.gender})</span>
                                 </div>
                                 <div class="text-[10.5px] text-slate-400 font-mono flex items-center gap-1">
-                                    <i class="fa-solid fa-id-card text-cyan-400"></i> ABHA: ${p.abhaId}
+                                    <i class="fa-solid fa-id-card text-cyan-400"></i> ABHA: <span class="patient-abha-display">${displayAbha}</span>
                                 </div>
                             </div>
                         </div>
@@ -10084,7 +10114,8 @@
                         </button>
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
 
         function filterPatientTable() {
@@ -10105,12 +10136,21 @@
         }
 
         function openEConsentModal(subjectId) {
-            const p = cohortPatients.find(item => item.id === subjectId) || cohortPatients[0];
+            const p = cohortPatients.find(item => item.id === subjectId || maskId(item.id) === subjectId) || cohortPatients[0];
             const modal = document.getElementById('eConsentVerificationModal');
             if (!modal) return;
+            const isAnon = state.dpdpAnonymized !== false;
 
-            document.getElementById('eModalSubjectId').textContent = p.id;
-            document.getElementById('eModalAbhaId').textContent = p.abhaId;
+            const eSubj = document.getElementById('eModalSubjectId');
+            const eAbha = document.getElementById('eModalAbhaId');
+            if (eSubj) {
+                eSubj.setAttribute('data-raw-id', p.id);
+                eSubj.textContent = isAnon ? maskId(p.id) : p.id;
+            }
+            if (eAbha) {
+                eAbha.setAttribute('data-raw-abha', p.abhaId);
+                eAbha.textContent = isAnon ? maskAbha(p.abhaId) : p.abhaId;
+            }
             document.getElementById('eModalBlockHeight').textContent = p.blockHeight;
             document.getElementById('eModalShaHash').textContent = p.sha256;
             document.getElementById('eModalMerkleRoot').textContent = p.merkleRoot;
@@ -11964,21 +12004,151 @@
         }
         window.switchTab = switchTab;
 
-        function togglePiiUnmasking(unmasked) {
-            const badge = document.getElementById('piiMaskStatusBadge');
-            if (unmasked) {
-                if (badge) {
-                    badge.textContent = 'UNMASKED (ADMIN AUDIT)';
-                    badge.className = 'text-[9.5px] px-2 py-0.5 rounded bg-rose-500/15 text-rose-600 dark:text-rose-400 font-mono font-bold border border-rose-500/30';
-                }
-                showToast('Root Security Alert: Patient PII de-anonymized for CDSCO Statutory Review (#AUD-PII-901)', 'warning');
-            } else {
-                if (badge) {
-                    badge.textContent = 'ANONYMIZED (SHA-256)';
-                    badge.className = 'text-[9.5px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-mono font-bold border border-emerald-500/30';
-                }
-                showToast('Patient PII Re-Anonymized: Zero-Knowledge Privacy Restored', 'success');
+        // =====================================================================
+        // DPDP ACT 2023 DATA PRIVACY & ANONYMIZATION ENGINE
+        // =====================================================================
+        function maskName(name) {
+            if (!name || typeof name !== 'string') return '';
+            return name.trim().split(/\s+/).map(word => {
+                if (!word) return '';
+                return word.charAt(0).toUpperCase() + '****';
+            }).join(' ');
+        }
+
+        function maskId(id) {
+            if (!id || typeof id !== 'string') return '';
+            if (id.startsWith('ABHA-')) {
+                return 'ABHA-****' + id.slice(-4);
             }
+            const parts = id.split('-');
+            if (parts.length >= 3) {
+                return `${parts[0]}-****${parts[parts.length - 1]}`;
+            }
+            if (parts.length === 2) {
+                return `${parts[0]}-****${parts[1].slice(-4)}`;
+            }
+            return id.length > 4 ? '****' + id.slice(-4) : id;
+        }
+
+        function maskAbha(abha) {
+            if (!abha || typeof abha !== 'string') return '';
+            if (abha.startsWith('ABHA-')) {
+                return 'ABHA-****' + abha.slice(-4);
+            }
+            const parts = abha.split('-');
+            if (parts.length === 4) {
+                return `${parts[0]}-****-****-${parts[3]}`;
+            }
+            if (parts.length > 1) {
+                return `${parts[0]}-****${parts[parts.length - 1]}`;
+            }
+            return abha.length > 4 ? 'ABHA-****' + abha.slice(-4) : abha;
+        }
+
+        function toggleDpdpAnonymization(forcedState) {
+            if (typeof forcedState === 'boolean') {
+                state.dpdpAnonymized = forcedState;
+            } else {
+                state.dpdpAnonymized = !state.dpdpAnonymized;
+            }
+            try {
+                localStorage.setItem('aiia_dpdp_anon', state.dpdpAnonymized ? 'true' : 'false');
+            } catch(e) {}
+            updateDpdpAnonymizationUi();
+            const isAnon = state.dpdpAnonymized;
+            showToast(isAnon ? '🔒 DPDP Privacy Shield: Patient identities masked (R**** K**** / ABHA-****)' : '🔓 DPDP Privacy Shield: Patient identities unmasked (Audit View)', isAnon ? 'success' : 'warning');
+        }
+
+        function updateDpdpAnonymizationUi() {
+            const isAnon = state.dpdpAnonymized !== false;
+
+            // 1. Header Button
+            const btn = document.getElementById('dpdpAnonymizeBtn');
+            const pill = document.getElementById('dpdpStatusPill');
+            const icon = document.getElementById('dpdpShieldIcon');
+            if (btn) {
+                btn.setAttribute('aria-pressed', isAnon ? 'true' : 'false');
+                if (isAnon) {
+                    btn.className = 'ml-2 flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-bold tracking-wide transition-all duration-200 cursor-pointer select-none shadow-sm border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300';
+                    if (pill) {
+                        pill.textContent = 'ON';
+                        pill.className = 'px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30';
+                    }
+                    if (icon) icon.className = 'fa-solid fa-user-shield text-[10px] text-emerald-500 dark:text-emerald-400';
+                } else {
+                    btn.className = 'ml-2 flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-bold tracking-wide transition-all duration-200 cursor-pointer select-none shadow-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-300';
+                    if (pill) {
+                        pill.textContent = 'OFF';
+                        pill.className = 'px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30';
+                    }
+                    if (icon) icon.className = 'fa-solid fa-shield text-[10px] text-slate-400';
+                }
+            }
+
+            // 2. Refresh Patient Cohort Table in Registry Tab
+            if (typeof populatePatientCohortTable === 'function') {
+                const searchVal = document.getElementById('patientSearchInput')?.value;
+                if (searchVal && typeof filterPatientTable === 'function') {
+                    filterPatientTable();
+                } else {
+                    populatePatientCohortTable();
+                }
+            }
+
+            // 3. Dynamic Masking in Dose Admin Table
+            document.querySelectorAll('[data-patient-name]').forEach(el => {
+                const rawName = el.getAttribute('data-patient-name');
+                el.textContent = isAnon ? maskName(rawName) : rawName;
+            });
+            document.querySelectorAll('[data-patient-id]').forEach(el => {
+                const rawId = el.getAttribute('data-patient-id');
+                const rawMeta = el.getAttribute('data-patient-meta') || '';
+                if (rawMeta) {
+                    const parts = rawMeta.split(' • ');
+                    const masked = maskId(parts[0]) + (parts[1] ? ` • ${parts[1]}` : '');
+                    el.textContent = isAnon ? masked : rawMeta;
+                } else {
+                    el.textContent = isAnon ? maskId(rawId) : rawId;
+                }
+            });
+
+            // 4. Dynamic Masking in eConsent Modal
+            const eSubj = document.getElementById('eModalSubjectId');
+            const eAbha = document.getElementById('eModalAbhaId');
+            if (eSubj) {
+                const rawId = eSubj.getAttribute('data-raw-id') || eSubj.textContent;
+                eSubj.setAttribute('data-raw-id', rawId);
+                eSubj.textContent = isAnon ? maskId(rawId) : rawId;
+            }
+            if (eAbha) {
+                const rawAbha = eAbha.getAttribute('data-raw-abha') || eAbha.textContent;
+                eAbha.setAttribute('data-raw-abha', rawAbha);
+                eAbha.textContent = isAnon ? maskAbha(rawAbha) : rawAbha;
+            }
+
+            // 5. Sync Admin PII Toggle & Badge if present
+            const adminToggle = document.getElementById('adminPiiToggle');
+            const adminBadge = document.getElementById('piiMaskStatusBadge');
+            if (adminToggle) {
+                adminToggle.checked = !isAnon;
+            }
+            if (adminBadge) {
+                if (isAnon) {
+                    adminBadge.textContent = 'ANONYMIZED (SHA-256)';
+                    adminBadge.className = 'text-[9.5px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-mono font-bold border border-emerald-500/30';
+                } else {
+                    adminBadge.textContent = 'UNMASKED (ADMIN AUDIT)';
+                    adminBadge.className = 'text-[9.5px] px-2 py-0.5 rounded bg-rose-500/15 text-rose-600 dark:text-rose-400 font-mono font-bold border border-rose-500/30';
+                }
+            }
+        }
+        window.toggleDpdpAnonymization = toggleDpdpAnonymization;
+        window.maskName = maskName;
+        window.maskId = maskId;
+        window.maskAbha = maskAbha;
+
+        function togglePiiUnmasking(unmasked) {
+            toggleDpdpAnonymization(!unmasked);
         }
         window.togglePiiUnmasking = togglePiiUnmasking;
 
@@ -13991,6 +14161,15 @@ e9a4f210c817290dae81290384bcda90184b2e510b9814890281ba0174cd
             // Initialize HDI Analyzer, Patient Cohort, and i18n
             runHdiAnalysis();
             populatePatientCohortTable();
+            if (typeof updateDpdpAnonymizationUi === 'function') {
+                try {
+                    const savedAnon = localStorage.getItem('aiia_dpdp_anon');
+                    if (savedAnon !== null) {
+                        state.dpdpAnonymized = savedAnon === 'true';
+                    }
+                } catch(e) {}
+                updateDpdpAnonymizationUi();
+            }
             initLanguage();
 
             // NEW: Load saved avatar, animate ARGUS pipeline, init ML chart

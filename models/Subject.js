@@ -48,6 +48,7 @@ const subjectSchema = new mongoose.Schema(
     vitals: {
       systolicBP: { type: Number, required: true, default: 120 }, // mmHg
       diastolicBP: { type: Number, required: true, default: 80 }, // mmHg
+      fastingBloodSugar: { type: Number, default: 95 }, // mg/dL
       heartRate: { type: Number, required: true, default: 72 }, // bpm
       respiratoryRate: { type: Number, default: 16 }, // breaths/min
       temperature: { type: Number, default: 98.4 }, // °F
