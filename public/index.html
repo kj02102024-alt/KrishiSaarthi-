@@ -2840,7 +2840,7 @@
         </div>
         <div class="flex items-center flex-wrap gap-2 sm:gap-3 text-[10.5px]">
             <span class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
-                <i class="fa-solid fa-shield-halved text-[9px]"></i> <span data-i18n="hdr_gcp">ICH GCP Validated</span>
+                <i class="fa-solid fa-shield-halved text-[9px]"></i> <span data-i18n="hdr_gcp">ICH-GCP Aligned</span>
             </span>
             <span class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 font-medium">
                 <i class="fa-solid fa-fingerprint text-[9px]"></i> <span>21 CFR Part 11</span>
@@ -2848,7 +2848,7 @@
             <!-- Live Real-Time CDSCO Sync Indicator -->
             <div id="cdscoSyncIndicator" class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-900/90 border border-emerald-500/30 text-emerald-300 font-mono shadow-sm">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>CDSCO: <strong class="font-semibold text-white" data-i18n="hdr_cdsco_active">Active</strong> (<span id="cdscoLatency">18ms</span>)</span>
+                <span>CDSCO: <strong class="font-semibold text-white" data-i18n="hdr_cdsco_active">Workflow</strong> (<span id="cdscoLatency">18ms</span>)</span>
             </div>
 
             <!-- PvPI Emergency Escalation Quick-Action Button -->
@@ -10227,8 +10227,8 @@
             en: {
                 hdr_title: 'AIIA AYUSH CTMS Dashboard',
                 hdr_pvpi_escalate: 'PvPI Emergency Escalation',
-                hdr_cdsco_active: 'Active',
-                hdr_gcp: 'ICH GCP E6(R2) & 21 CFR Part 11 Certified',
+                hdr_cdsco_active: 'Workflow',
+                hdr_gcp: 'ICH-GCP Aligned',
                 nav_overview: 'Dashboard Overview',
                 nav_ctri: 'Active Trials',
                 nav_subjects: 'Patient Registry',
@@ -12648,7 +12648,7 @@ e9a4f210c817290dae81290384bcda90184b2e510b9814890281ba0174cd
 
         const simulatedAuditEvents = [
             { time: '10:45 AM', text: 'Site #04 Delhi: Subject #1421 Enrolled', type: 'subject' },
-            { time: '10:42 AM', text: 'GCP Audit Verified - 99.4%', type: 'audit' },
+            { time: '10:42 AM', text: 'GCP Audit Trail - 99.4%', type: 'audit' },
             { time: '10:30 AM', text: 'Trial AYU-2026-04 Data Exported', type: 'export' },
             { time: '10:28 AM', text: 'Block #BLK-009: 21 CFR Part 11 SHA-256 Validated (Hash: 98d721bf...)', type: 'block' },
             { time: '10:25 AM', text: 'Site #02 Lucknow: CARI Guduchi Lab Panels Synced with CDSCO', type: 'sync' },
